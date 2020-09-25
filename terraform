@@ -1,0 +1,2 @@
+terraform11 apply -var environment=prod -state .terraform/terraform.tfstate -var-file .terraform/prod.tfvars -var region=eu-west-1
+terraform11 state rm module.vpc_201906_uat1_common.aws_backup_vault.ledger_vault
