@@ -1,0 +1,20 @@
+set -euo pipefail
+
+# Configure SSH KEY if present in Env variable
+if [ -n "${DRONE_SSH_KEY:-}" ];then
+  install -d -m 0700 "${HOME}/.ssh"
+  echo "${DRONE_SSH_KEY}" > "${HOME}/.ssh/id_ed25519"
+  chmod 600 "${HOME}/.ssh/id_ed25519"
+  cp "${HOME}/.ssh/id_ed25519" /home/ledger/.ssh/id_ed25519
+  chown ledger:ledger /home/ledger/.ssh/id_ed25519
+  chmod 600 /home/ledger/.ssh/id_ed25519
+fi
+
+ssh-keyscan -H -t ed25519 git-orange.donjon.ledger.fr >> ${HOME}/.ssh/known_hosts
+ssh-keyscan -t ed25519 git-orange.donjon.ledger.fr >> ${HOME}/.ssh/known_hosts
+
+ssh-keyscan -H -t ed25519 git-orange.donjon.ledger.fr >> /home/ledger/.ssh/known_hosts
+ssh-keyscan -t ed25519 git-orange.donjon.ledger.fr >> /home/ledger/.ssh/known_hosts
+chown ledger:ledger /home/ledger/.ssh/known_hosts
+
+exit 0
